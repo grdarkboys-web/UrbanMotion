@@ -1,132 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';
-import ProductCard from '../components/ProductCard';
-import './HomePage.css';
+import React from "react";
 
-const BANNERS = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2070&auto=format&fit=crop',
-    title: 'URBAN MOTION',
-    subtitle: 'Platform Jual Beli & Legit Check Sneakers Terpercaya No. 1 di Indonesia.'
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?q=80&w=2021&auto=format&fit=crop', // Foto Toko Sepatu
-    title: 'AUTHENTIC GUARANTEED',
-    subtitle: 'Setiap pasang sepatu diverifikasi oleh ahli. 100% Original atau uang kembali.'
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=2070&auto=format&fit=crop', // Foto Sneakers Neon
-    title: 'NEW ARRIVALS',
-    subtitle: 'Dapatkan koleksi sneakers terbaru dan terpanas minggu ini.'
-  }
-];
-
-function HomePage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const slideInterval = setInterval(() => {
-      // Pindah ke slide berikutnya, kalau habis balik ke 0
-      setCurrentSlide((prev) => (prev + 1) % BANNERS.length);
-    }, 3000);
-
-    return () => clearInterval(slideInterval);
-  }, []);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/products');
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Gagal ambil produk:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
-      
-      {/* 3. Hero Section (Carousel Dinamis) */}
-      <div 
-        className="hero-section"
-        style={{ 
-          // Ganti gambar background sesuai slide aktif
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${BANNERS[currentSlide].image}')`
-        }}
-      >
-        <div className="hero-content">
-          {/* Teks berubah sesuai slide */}
-          <h1>{BANNERS[currentSlide].title}</h1>
-          <p>{BANNERS[currentSlide].subtitle}</p>
-          <a href="#shop" className="hero-btn">Belanja Sekarang</a>
+export default function HomePage() {
+  return (
+    <div className="w-full min-h-screen bg-white text-black">
+      {/* Navbar */}
+      <div className="w-full flex justify-between items-center px-6 py-4 shadow-sm bg-white fixed top-0 left-0 z-50">
+        <div className="font-bold text-lg">Urban Motion</div>
+        <div className="flex gap-6 text-sm">
+          <a href="#">Home</a>
+          <a href="#">Marketplace</a>
+          <a href="#">Legit Check</a>
+          <a href="#">Forum</a>
         </div>
+        <div className="flex gap-3 text-sm">
+          <button className="px-4 py-1 rounded-full bg-gray-200">Login</button>
+          <button className="px-4 py-1 rounded-full bg-black text-white">Sign Up</button>
+        </div>
+      </div>
 
-        {/* 4. Indikator Titik (Dots) di Bawah */}
-        <div className="hero-dots">
-          {BANNERS.map((_, index) => (
-            <span 
-              key={index} 
-              className={`hero-dot ${index === currentSlide ? 'active' : ''}`}
-              onClick={() => setCurrentSlide(index)} // Bisa diklik manual juga
-            />
+      <div className="w-full h-[420px] bg-[#2A0F0F] flex flex-col justify-center items-center text-center text-white mt-16">
+        <h2 className="text-xl font-semibold">Toko Sepatu dan Legit Check</h2>
+        <h2 className="text-xl font-semibold mt-1">Pertama di <span className="text-red-400">Jawa Timur</span></h2>
+        <p className="text-xs mt-4 opacity-70">Founded in 2024</p>
+        <h1 className="text-4xl font-bold tracking-widest mt-2">9999</h1>
+        <p className="text-xs opacity-70">User Aktif</p>
+      </div>
+
+      <div className="flex justify-center mt-6">
+        <div className="flex gap-3 text-xs">
+          <button className="px-3 py-1 rounded-full bg-red-500 text-white">Semua</button>
+          <button className="px-3 py-1 rounded-full bg-gray-200">Nike</button>
+          <button className="px-3 py-1 rounded-full bg-gray-200">Adidas</button>
+          <button className="px-3 py-1 rounded-full bg-gray-200">New Balance</button>
+          <button className="px-3 py-1 rounded-full bg-gray-200">Luxury</button>
+        </div>
+      </div>
+
+      <div className="w-full flex justify-center mt-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-11/12 max-w-5xl">
+          {[1,2,3,4,5,6,7,8].map((i) => (
+            <div key={i} className="p-4 shadow rounded-xl border hover:shadow-lg transition">
+              <div className="w-full h-32 bg-gray-200 rounded"></div>
+              <p className="mt-3 text-sm font-semibold">Nama Sneaker {i}</p>
+              <p className="text-xs opacity-60 mt-1">Colorway Random</p>
+              <p className="text-sm font-bold mt-2">IDR 2.XXX.XXX</p>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* 5. Trust Features */}
-      <div className="features-grid">
-        <div className="feature-card">
-          <div className="feature-icon">🔍</div>
-          <h3>Legit Check Pro</h3>
-          <p>Verifikasi keaslian oleh ahli profesional.</p>
-        </div>
-        <div className="feature-card">
-          <div className="feature-icon">💎</div>
-          <h3>100% Authentic</h3>
-          <p>Garansi uang kembali jika barang fake.</p>
-        </div>
-        <div className="feature-card">
-          <div className="feature-icon">🚀</div>
-          <h3>Fast Shipping</h3>
-          <p>Pengiriman cepat ke seluruh Indonesia.</p>
-        </div>
-      </div>
-
-      {/* 6. Produk Grid */}
-      <div id="shop">
-        <h2 className="section-title">New Arrivals 🔥</h2>
-        
-        {loading ? (
-          <div style={{textAlign: 'center', padding: '4rem'}}>
-            <p>Sedang memuat produk...</p>
-          </div>
-        ) : products.length === 0 ? (
-          <div style={{textAlign: 'center', padding: '4rem', background: 'white', borderRadius: '12px'}}>
-            <p style={{fontSize: '1.2rem', color: '#666'}}>Belum ada produk yang dijual saat ini.</p>
-          </div>
-        ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', 
-            gap: '25px' 
-          }}>
-            {products.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+      <div className="w-full text-center mt-10 mb-16 text-sm">
+        Jangan Malu Terlihat <span className="text-red-500">Miskin</span><br/>
+        Malulah Jika Menggunakan Barang <span className="text-red-500">Kawe</span>
       </div>
     </div>
   );
 }
-
-export default HomePage;
